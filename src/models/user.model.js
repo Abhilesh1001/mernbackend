@@ -8,7 +8,6 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        trim: trim,
         index: true,
         lowecase: true
     },
@@ -16,32 +15,40 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        trim: trim,
         lowecase: true
     },
     password: {
         type: String,
-        required: true
+        required: [true,'Password is require']
     },
     fullname: {
         type: String,
         required: true,
-        trim: trim,
         index: true,
     },
-    avtar: {
+    avatar: {
         type: String, //clodnery url service
         required: true
     },
     coverImage: {
         type: String
+    },
+    watchHistory :[
+        {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "Video"
+        }
+    ],
+    refreshToken : {
+        type : String,
+        required : [true,"Password is required"]
     }
 
 }, { timestamps: true })
 
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
-    this.password = bcrypt.hash(this.password, 10)
+    this.password = await bcrypt.hash(this.password, 10)
     next()
 })
 
