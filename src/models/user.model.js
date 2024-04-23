@@ -21,7 +21,7 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true,'Password is require']
     },
-    fullname: {
+    fullName: {
         type: String,
         required: true,
         index: true,
@@ -41,7 +41,6 @@ const userSchema = mongoose.Schema({
     ],
     refreshToken : {
         type : String,
-        required : [true,"Password is required"]
     }
 
 }, { timestamps: true })
@@ -52,7 +51,7 @@ userSchema.pre("save", async function (next) {
     next()
 })
 
-userSchema.methods.isPasswordCorrext = async function (password) {
+userSchema.methods.isPasswordCorrect = async function (password) {
     return await bcrypt.compare(password, this.password)
 }
 
